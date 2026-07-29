@@ -1,0 +1,21 @@
+{
+  "bundle": {
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1",
+          "libayatana-appindicator3-1",
+          "libssl3",
+          "libxdo3"
+        ],
+        "desktopTemplate": "clearthread.desktop",
+        "icons": [
+          "icons/128x128.png",
+          "icons/128x128@2x.png",
+          "icons/icon.png"
+        ]
+      }
+    },
+    "targets": ["deb", "rpm", "appimage"]
+  }
+}

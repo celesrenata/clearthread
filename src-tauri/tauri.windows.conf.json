@@ -1,0 +1,18 @@
+{
+  "windows": {
+    "nsis": {
+      "installerIcon": "icons/icon.ico",
+      "installerLanguages": "en-US",
+      "languages": {
+        "en-US": "Lang.nls"
+      },
+      "menu": "ClearThread",
+      "runAfterFinish": true
+    },
+    "wix": {
+      "language": "en-US",
+      "bannerPath": "icons/banner.png",
+      "dialogImagePath": "icons/dialog.png"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "productName": "ClearThread",
+  "version": "0.1.0",
+  "identifier": "com.celesrenata.clearthread",
+  "build": {
+    "frontendDist": "../src-tauri/dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "ClearThread",
+        "width": 1280,
+        "height": 900,
+        "minWidth": 1024,
+        "minHeight": 768,
+        "resizable": true,
+        "fullscreen": false,
+        "decorated": true
+      }
+    ],
+    "trayIcon": {
+      "iconPath": "icons/tray-icon.png",
+      "iconAsTemplate": true
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/tray-icon.png",
+      "icons/tray-icon.ico"
+    ]
+  },
+  "plugins": {
+    "tray": {
+      "menu": {
+        "items": [
+          { "id": "show", "label": "Show" },
+          { "id": "hide", "label": "Hide" },
+          { "type": "separator" },
+          { "id": "import", "label": "Import Data" },
+          { "id": "analyze", "label": "Run Analysis" },
+          { "type": "separator" },
+          { "id": "quit", "label": "Quit" }
+        ]
+      }
+    }
+  }
+}

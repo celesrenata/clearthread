@@ -1,0 +1,15 @@
+{
+  "macOS": {
+    "frameworks": [
+      "System.framework",
+      "Foundation.framework",
+      "AppKit.framework",
+      "CoreGraphics.framework",
+      "CoreFoundation.framework"
+    ],
+    "minimumVersion": "10.15",
+    "signingIdentity": "-",
+    "entitlements": "Entitlements.plist",
+    "provisioningProfile": ""
+  }
+}

@@ -1,0 +1,27 @@
+/* Light theme (default) */
+:root {
+  --text-primary: #1a1a2e;
+  --text-secondary: #555770;
+  --border-color: #e0e0e0;
+  --sidebar-bg: #f8f9fa;
+  --main-bg: #ffffff;
+  --hover-bg: #e8e8e8;
+  --active-bg: #d0d0d0;
+  --button-bg: #ffffff;
+  --accent-color: #4a6cf0;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
+}
+
+/* Dark theme */
+.app.dark {
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0b0;
+  --border-color: #3a3a4a;
+  --sidebar-bg: #1a1a2e;
+  --main-bg: #16162a;
+  --hover-bg: #2a2a3e;
+  --active-bg: #3a3a5e;
+  --button-bg: #2a2a3e;
+}

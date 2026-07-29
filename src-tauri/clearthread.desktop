@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=ClearThread
+Comment=Local-first Facebook/Messenger relationship analysis
+Exec=clearthread %U
+Icon=com.celesrenata.clearthread
+Type=Application
+Categories=Utility;Office;Healthcare;
+Terminal=false
+MimeType=x-scheme-handler/clearthread;
+StartupNotify=true
+Keywords=facebook;messenger;relationship;analysis;therapy;

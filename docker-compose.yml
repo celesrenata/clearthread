@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  clearthread:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CUDA_VERSION: 12.2.2
+        PLATFORM: ${GPU_BACKEND:-cuda}
+      labels:
+        clearthread.version: "0.1.0"
+        clearthread.description: "Local-first Facebook/Messenger relationship analysis"
+    image: clearthread:latest
+    container_name: clearthread
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./source_data:/app/source_data
+      - ./normalized:/app/normalized
+      - ./analysis:/app/analysis
+      - ./provenance:/app/provenance
+      - ./config:/app/config
+      - ./logs:/app/logs
+    environment:
+      - CLEARTHREAD_DATA_DIR=/app/data
+      - CLEARTHREAD_MODEL_DIR=/app/models
+      - CLEARTHREAD_SOURCE_DIR=/app/source_data
+      - CLEARTHREAD_NORMALIZED_DIR=/app/normalized
+      - CLEARTHREAD_ANALYSIS_DIR=/app/analysis
+      - CLEARTHREAD_PROVENANCE_DIR=/app/provenance
+      - CLEARTHREAD_CONFIG_DIR=/app/config
+      - GPU_BACKEND=${GPU_BACKEND:-cuda}
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      # Encryption settings
+      - CLEARTHREAD_ENCRYPTION_ENABLED=true
+      - CLEARTHREAD_ENCRYPTION_KEY_PATH=/app/config/encryption.key
+      # Model settings
+      - CLEARTHREAD_MODEL_PROVIDER=${MODEL_PROVIDER:-ollama}
+      - CLEARTHREAD_MODEL_CONTEXT_LENGTH=${MODEL_CONTEXT_LENGTH:-4096}
+      - CLEARTHREAD_MODEL_TEMPERATURE=${MODEL_TEMPERATURE:-0.7}
+      # Privacy settings
+      - CLEARTHREAD_PRIVACY_LOCAL_ONLY=true
+      - CLEARTHREAD_PRIVACY_NO_TELEMETRY=true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: ${GPU_DRIVER:-nvidia}
+              count: ${GPU_COUNT:-1}
+              capabilities: [gpu]
+    ports:
+      - "1420:1420"  # Tauri dev port
+      - "1421:1421"  # Tauri API port
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import clearthread; print('ClearThread OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Optional: Ollama service for local AI inference
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ./models/ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  # Optional: Redis for background job queue
+  redis:
+    image: redis:7-alpine
+    container_name: clearthread-redis
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  data:
+  models:
+  source_data:
+  normalized:
+  analysis:
+  provenance:
+  config:
+  logs:
+  redis:

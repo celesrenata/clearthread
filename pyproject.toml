@@ -1,0 +1,166 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clearthread"
+version = "0.1.0"
+description = "A local-first desktop application that helps users privately analyze their Facebook and Messenger data exports to reconstruct relationship histories."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "ClearThread Contributors" },
+]
+keywords = ["facebook", "messenger", "relationship", "analysis", "therapy", "local-first"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+]
+
+dependencies = [
+    # Core data processing
+    "sqlite-utils>=3.36",
+    "aiosqlite>=0.19.0",
+    "pycryptodome>=3.19.0",
+    "PyYAML>=6.0",
+
+    # AI/ML
+    "torch>=2.1.0",
+    "transformers>=4.36.0",
+    "sentence-transformers>=2.2.2",
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+
+    # Vector search
+    "faiss-cpu>=1.7.4",
+    "hnswlib>=0.8.0",
+
+    # HTTP/API
+    "httpx>=0.25.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+
+    # UI (Tauri bridge) - Tauri CLI is installed via cargo in Docker
+    # tauri-python is the Python binding (optional, not required for build)
+    # "tauri>=0.5.0",
+
+    # PDF generation
+    "reportlab>=4.0.0",
+    "markdown>=3.5.0",
+
+    # Image processing
+    "Pillow>=10.0.0",
+    "opencv-python-headless>=4.8.0",
+
+    # Utilities
+    "click>=8.1.0",
+    "rich>=13.6.0",
+    "tqdm>=4.66.0",
+    "python-dateutil>=2.8.0",
+    "uuid>=1.30",
+    "zstandard>=0.22.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+    "black>=23.11.0",
+    "mypy>=1.7.0",
+    "types-PyYAML>=6.0.0",
+    "types-python-dateutil>=2.8.0",
+]
+cuda = [
+    "torch[cuda]>=2.1.0",
+]
+mlx = [
+    "mlx>=0.13.0",
+    "mlx-lm>=0.13.0",
+]
+ollama = [
+    "ollama>=0.1.0",
+]
+llamacpp = [
+    "llama-cpp-python>=0.2.0",
+]
+
+[project.scripts]
+clearthread = "clearthread.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/celesrenata/clearthread"
+Documentation = "https://clearthread.readthedocs.io"
+Repository = "https://github.com/celesrenata/clearthread"
+Issues = "https://github.com/celesrenata/clearthread/issues"
+Changelog = "https://github.com/celesrenata/clearthread/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/clearthread"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+]
+ignore = [
+    "E501", # line too long (formatter handles this)
+    "W191", # tab indentation
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+include = "\\.pyi?$"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = ["transformers.*", "torch.*", "faiss.*", "PIL.*", "cv2.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "strict"
+include = ["src/clearthread"]
+exclude = ["**/__pycache__", "**/*.egg-info"]
